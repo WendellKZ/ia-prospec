@@ -1,0 +1,12 @@
+Flask==3.0.3
+python-dotenv==1.0.1
+SQLAlchemy==2.0.36
+requests==2.32.3
+beautifulsoup4==4.12.3
+tldextract==5.1.2
+pytrends==4.9.2
+gunicorn==22.0.0
+google-cloud-bigquery==3.25.0
+basedosdados==2.0.1
+celery==5.3.6
+redis==5.0.8

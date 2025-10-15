@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Solicitar Opt-out / Remoção de Contato</h4>
+<p class="text-muted">Preencha os dados abaixo para solicitar a remoção do seu contato de nossa base.</p>
+<form method="post" class="row g-3">
+  <div class="col-md-6">
+    <label class="form-label">Empresa</label>
+    <input name="company" class="form-control" required>
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">E-mail</label>
+    <input name="email" type="email" class="form-control" required>
+  </div>
+  <div class="col-12">
+    <label class="form-label">Motivo (opcional)</label>
+    <textarea name="reason" class="form-control" rows="3" placeholder="Ex.: Não queremos receber contatos comerciais."></textarea>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-danger">Enviar solicitação</button>
+  </div>
+</form>
+{% endblock %}

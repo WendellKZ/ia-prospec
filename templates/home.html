@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h3 class="mb-3">Prospectar com IA</h3>
+<form method="post" action="/buscar" class="row g-3">
+  <div class="col-md-4">
+    <label class="form-label">Segmento</label>
+    <input name="segmento" class="form-control" placeholder="Ex.: brinquedos (ou deixe genérico)">
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Produto</label>
+    <input name="produto" class="form-control" placeholder="Ex.: bonecas (ou descreva seu produto)">
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">UF (opcional)</label>
+    <input name="uf" class="form-control" placeholder="BR">
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <button class="btn btn-primary w-100">Iniciar busca</button>
+  </div>
+</form>
+<p class="text-muted mt-2">Com o modo “eager” ativo, a página de status atualiza assim que finalizar.</p>
+{% endblock %}

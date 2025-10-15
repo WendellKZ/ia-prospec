@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between">
+  <h4>Leads — {{search.segmento}} / {{search.produto}} ({{search.uf}})</h4>
+  <div class="d-flex gap-2">
+    <a class="btn btn-secondary btn-sm" href="/enriquecer_async/{{search.id}}">Enriquecer contatos (Top 25)</a>
+    <a class="btn btn-success btn-sm" href="/export_csv/{{search.id}}">Exportar CSV</a>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-md-6">
+    <small class="text-muted">Sazonalidade (Google Trends / fallback):</small>
+    <div class="row row-cols-12 g-1">
+      {% for par in sazonalidade %}
+        <div class="col-12">
+          <div class="d-flex align-items-center">
+            <div style="width:80px">Mês {{par[0]}}</div>
+            <div class="progress w-100" role="progressbar" aria-valuenow="{{par[1]}}" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" style="width: {{par[1]}}%">{{'%.0f' % par[1]}}%</div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<hr class="my-3">
+
+<div class="row">
+  {% for lead in leads %}
+    <div class="col-md-6 mb-3">
+      <div class="card p-3">
+        <b>{{lead.company.nome_fantasia or lead.company.razao_social}}</b>
+        <div class="text-muted">{{lead.company.municipio}}/{{lead.company.uf}} — CNAE {{lead.company.cnae_principal}}</div>
+        <div>Score: <b>{{'%.2f' % lead.score}}</b> · Prob. 30d: {{'%.0f' % (lead.prob_30d*100)}}% · Janela favorita: mês {{lead.janela_favoravel}}</div>
+        {% if lead.company.site_url %}
+          <div class="mt-1"><small>🌐 {{lead.company.site_url}}</small></div>
+        {% endif %}
+        {% if lead.company.contacts and lead.company.contacts|length > 0 %}
+          <div class="mt-1"><small>Contatos: 
+            {% for ct in lead.company.contacts[:3] %}
+              <span class="badge text-bg-light">{{ct.tipo}}: {{ct.valor}}</span>
+            {% endfor %}
+          </small></div>
+        {% else %}
+          <div class="mt-1"><small class="text-muted">Sem contatos ainda — use "Enriquecer contatos".</small></div>
+        {% endif %}
+        <hr>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary btn-sm" onclick="copiar('{{textos[lead.id]['wa_curta']|e}}')">Copiar WhatsApp</button>
+          <button class="btn btn-outline-secondary btn-sm" onclick="copiar('{{textos[lead.id]['wa_formal']|e}}')">Copiar Formal</button>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<script>
+function copiar(txt){
+  navigator.clipboard.writeText(txt);
+  alert('Mensagem copiada!');
+}
+</script>
+{% endblock %}

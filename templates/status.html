@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Status da Busca #{{search.id}} — {{search.segmento}} / {{search.produto}} ({{search.uf}})</h4>
+<p>Leads encontrados até agora: <b>{{leads_count}}</b></p>
+<div class="mb-3">
+  <a class="btn btn-primary btn-sm" href="/resultado/{{search.id}}">Abrir resultados</a>
+  <a class="btn btn-secondary btn-sm" href="/enriquecer_async/{{search.id}}">Enriquecer contatos (Top 25)</a>
+  <a class="btn btn-success btn-sm" href="/export_csv/{{search.id}}">Exportar CSV</a>
+</div>
+<table class="table table-sm">
+  <thead><tr><th>Job</th><th>Status</th><th>Início</th><th>Fim</th><th>Erro</th></tr></thead>
+  <tbody>
+    {% for j in jobs %}
+      <tr>
+        <td>{{j.kind}}</td>
+        <td>
+          {% if j.status=='done' %}
+            <span class="badge text-bg-success">concluído</span>
+          {% elif j.status=='running' %}
+            <span class="badge text-bg-warning">em andamento</span>
+          {% elif j.status=='error' %}
+            <span class="badge text-bg-danger">erro</span>
+          {% else %}
+            <span class="badge text-bg-secondary">{{j.status}}</span>
+          {% endif %}
+        </td>
+        <td>{{j.started_at or '-'}}</td>
+        <td>{{j.finished_at or '-'}}</td>
+        <td><small>{{j.error[:80] if j.error else ''}}</small></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p class="text-muted">Atualize a página para ver mudanças.</p>
+{% endblock %}
